@@ -185,7 +185,7 @@ public class MecanumRobot {
 
         touchSensor = myOpMode.hardwareMap.get(TouchSensor.class, "touchSensor");
 
-        //AutoArmDown(); // includes wrist & claw actions
+        AutoArmDown(); // includes wrist & claw actions
         runWithoutEncoderSlide();
         runWithoutEncoderArm();
 
