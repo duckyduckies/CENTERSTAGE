@@ -53,7 +53,7 @@ public class MecanumRobot {
     
     public final static int autoArmUpArm = 700;
     public final static int autoArmUpBackArm = 2793; //2397;
-    public final static DcMotorSimple.Direction defaultDirectionLeftArm = DcMotorSimple.Direction.FORWARD;
+    public final static DcMotorSimple.Direction defaultDirectionLeftArm = DcMotorSimple.Direction.REVERSE;
     public final static DcMotorSimple.Direction defaultDirectionRightArm = DcMotorSimple.Direction.FORWARD;
     public final static DcMotorSimple.Direction defaultDirectionSlide = DcMotorSimple.Direction.FORWARD;
 
@@ -72,7 +72,7 @@ public class MecanumRobot {
 
     public final static double autoArmUpWrist = 0.6;
 
-    public final static int slidePickupArm = 135;
+    public final static int slidePickupArm = 70; //135
 
     public final static int defaultLauncherPosition = 0;
 

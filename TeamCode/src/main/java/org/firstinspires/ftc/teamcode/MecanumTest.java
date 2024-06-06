@@ -19,7 +19,7 @@ import java.util.List;
 public class MecanumTest extends LinearOpMode {
 
     MecanumRobot robot = new MecanumRobot(this);
-    boolean debugMode = true;
+    boolean debugMode = false;
 
     private class DriveThread extends Thread
     {
@@ -179,7 +179,7 @@ public class MecanumTest extends LinearOpMode {
 
             // Touch sensor
             // Cannot use port 0 on driver station
-            if (robot.touchSensor.isPressed()) {
+            /*if (robot.touchSensor.isPressed()) {
                 if (debugMode)
                     telemetry.addData("Touch Sensor", "Is Pressed");
                 armDown = true;
@@ -190,7 +190,7 @@ public class MecanumTest extends LinearOpMode {
                 if (debugMode)
                     telemetry.addData("Touch Sensor", "Is Not Pressed");
                 armDown = false;
-            }
+            }*/
 
             if (debugMode) {
                 // Color Sensor
@@ -302,7 +302,7 @@ public class MecanumTest extends LinearOpMode {
                         if (debugMode)
                             telemetry.addData("Lower arm. Brake arm motor", 0);
                     } else {
-                        leftPower = -gamepad2.right_stick_y / 3;
+                        leftPower = -gamepad2.right_stick_y / 2;
                         robot.setMotorPowerArm(leftPower);
                         if (debugMode)
                             telemetry.addData("Lower arm. Set Arm Power to ", leftPower);
@@ -315,7 +315,7 @@ public class MecanumTest extends LinearOpMode {
                         if (debugMode)
                             telemetry.addData("Raise arm. Brake arm motor", 0);
                     } else {
-                        leftPower = -gamepad2.right_stick_y / 3;
+                        leftPower = -gamepad2.right_stick_y / 2;
                         robot.setMotorPowerArm(leftPower);
                         if (debugMode)
                             telemetry.addData("Raise arm. Set Arm Power to ", leftPower);
@@ -399,7 +399,7 @@ public class MecanumTest extends LinearOpMode {
 
                 if (gamepad1.left_trigger > 0.9) {
                     if (leftPosition == 0) { //close
-                        leftPosition = 0.4; //open
+                        leftPosition = 1; //open 0.4
                         robot.setServoPositionLeftHand(leftPosition);
                         sleep(100);
                     } else {
@@ -412,7 +412,7 @@ public class MecanumTest extends LinearOpMode {
                 }
                 if (gamepad1.right_trigger > 0.9) {
                     if (rightPosition == 1) {
-                        rightPosition = 0.6; //open
+                        rightPosition = 0; //open 0.6
                         robot.setServoPositionRightHand(rightPosition);
                         sleep(100);
                     } else {
@@ -474,6 +474,10 @@ public class MecanumTest extends LinearOpMode {
                 robot.AutoSlidePickup();
                 robot.runWithoutEncoderSlide();
                 robot.runWithoutEncoderArm();
+            }
+
+            if (gamepad1.b){
+                robot.AutoArmDown();
             }
 
             /*
