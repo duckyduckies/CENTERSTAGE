@@ -72,7 +72,7 @@ public class MecanumRobot {
 
     public final static double autoArmUpWrist = 0.6;
 
-    public final static int slidePickupArm = 135;
+    public final static int slidePickupArm = 70; //135
 
     public final static int defaultLauncherPosition = 0;
 
