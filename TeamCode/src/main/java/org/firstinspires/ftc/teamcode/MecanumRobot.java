@@ -46,7 +46,7 @@ public class MecanumRobot {
     private DcMotor motorRightArm = null;
     private DcMotor motorSlides = null;
 
-    public final static int slideMax = 245;
+    public final static int slideMax = 255;
     public final static int slideMin = 0;
     public final static int armMax = 2900;
     public final static int armMin = 0;
@@ -449,12 +449,13 @@ public class MecanumRobot {
     }
 
     public void AutoArmDown() {
-        // Wrist up
-        setServoPositionWrist(defaultWristPosition);
 
         // Claw closed
         setServoPositionLeftHand(defaultLeftPosition);
         setServoPositionRightHand(defaultRightPosition);
+        myOpMode.sleep(500);
+        // Wrist up
+        setServoPositionWrist(defaultWristPosition);
 
         runToPositionSlide(0, -0.5);
         runToPositionArm(0,-0.3);
@@ -506,8 +507,10 @@ public class MecanumRobot {
 
     public void AutoSlidePickup() {
         runToPositionArm(slidePickupArm,0.5);
-        runToPositionSlide(slideMax, 0.5);
+        runToPositionSlide(250, 0.7);
         setServoPositionWrist(wristDown);
+        setServoPositionLeftHand(1);
+        setServoPositionRightHand(0);
     }
     public void AutoArmUpBack() {
         runToPositionArm(autoArmUpBackArm, 0.5);
@@ -535,6 +538,8 @@ public class MecanumRobot {
     }
 
     /*
+    * !!! This part of code can't be used with the multi-thread gamepads due to unknown reason !!!
+    *
     * Automatically parks at a red or blue line
     *
     * Happens in the manual mode in front of the backdrop and the human player
