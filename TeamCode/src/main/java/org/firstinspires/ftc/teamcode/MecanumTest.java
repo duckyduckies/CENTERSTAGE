@@ -19,7 +19,7 @@ import java.util.List;
 public class MecanumTest extends LinearOpMode {
 
     MecanumRobot robot = new MecanumRobot(this);
-    boolean debugMode = false;
+    boolean debugMode = true;
 
     private class DriveThread extends Thread
     {
@@ -562,18 +562,13 @@ public class MecanumTest extends LinearOpMode {
             /* Auto mode
             * April Tag
              */
-            /*
+
             // By Kush
             if (gamepad1.right_bumper) {
                 aprilTagRunning = true;
             }
             if (aprilTagRunning) {
-                if (gamepad1.x) {
-                    checkForRed = true;
-                }
-                if (gamepad1.y) {
-                    checkForBlue = true;
-                }
+                checkForRed = true;
                 if (aprilTagDetected && aprilTagMode == 0) {
                     aprilTagMode = 1;
                 } else if (aprilTagDetected && aprilTagMode == 1) {
@@ -628,7 +623,7 @@ public class MecanumTest extends LinearOpMode {
                 telemetry.addData("Checking for Blue: ", checkForBlue);
                 telemetry.addData("distance", distance);
             }
-            */
+
             telemetry.update();
         }
         // stop the driving thread.

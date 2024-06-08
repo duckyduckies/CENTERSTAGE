@@ -54,7 +54,7 @@ public class MecanumRobot {
     public final static int autoArmUpArm = 700;
     public final static int autoArmUpBackArm = 2793; //2397;
     public final static DcMotorSimple.Direction defaultDirectionLeftArm = DcMotorSimple.Direction.REVERSE;
-    public final static DcMotorSimple.Direction defaultDirectionRightArm = DcMotorSimple.Direction.FORWARD;
+    public final static DcMotorSimple.Direction defaultDirectionRightArm = DcMotorSimple.Direction.REVERSE;
     public final static DcMotorSimple.Direction defaultDirectionSlide = DcMotorSimple.Direction.FORWARD;
 
     public final static int autoArmUpBackSlide = 186; //0;
@@ -185,7 +185,7 @@ public class MecanumRobot {
 
         touchSensor = myOpMode.hardwareMap.get(TouchSensor.class, "touchSensor");
 
-        AutoArmDown(); // includes wrist & claw actions
+        //AutoArmDown(); // includes wrist & claw actions
         runWithoutEncoderSlide();
         runWithoutEncoderArm();
 
