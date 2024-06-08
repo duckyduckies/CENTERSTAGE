@@ -19,7 +19,7 @@ import java.util.List;
 public class MecanumTest extends LinearOpMode {
 
     MecanumRobot robot = new MecanumRobot(this);
-    boolean debugMode = true;
+    boolean debugMode = false;
 
     private class DriveThread extends Thread
     {
