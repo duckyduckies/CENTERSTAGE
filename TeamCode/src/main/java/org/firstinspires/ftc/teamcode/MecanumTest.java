@@ -485,7 +485,7 @@ public class MecanumTest extends LinearOpMode {
             }
 
             if (gamepad1.a) {
-                robot.AutoSlidePickup();
+                robot.AutoArmOut();
                 robot.runWithoutEncoderSlide();
                 robot.runWithoutEncoderArm();
             }

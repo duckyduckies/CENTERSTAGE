@@ -52,7 +52,7 @@ public class MecanumRobot {
     public final static int armMax = 2900;
     public final static int armMin = 0;
     
-    public final static int autoArmUpArm = 650;
+    public final static int autoArmUpArm = 720;
     public final static int autoArmUpBackArm = 2793; //2397;
     public final static DcMotorSimple.Direction defaultDirectionLeftArm = DcMotorSimple.Direction.REVERSE;
     public final static DcMotorSimple.Direction defaultDirectionRightArm = DcMotorSimple.Direction.FORWARD;
@@ -73,7 +73,7 @@ public class MecanumRobot {
 
     public final static double autoArmUpWrist = 0.6;
 
-    public final static int slidePickupArm = 70; //135
+    public final static int autoArmOutPosition = 0; //135
 
     public final static int defaultLauncherPosition = 0;
 
@@ -457,8 +457,8 @@ public class MecanumRobot {
         // Wrist up
         setServoPositionWrist(defaultWristPosition);
 
-        runToPositionSlide(0, -0.5);
-        runToPositionArm(0,-0.3);
+        runToPositionSlide(0, -0.9);
+        runToPositionArm(0,-0.9);
         // Calibrates arm position using touch sensor
         // We don't need this because as long as robot is at 0 position when it's turned on
         // the encoder will remember the position while power is on
@@ -477,8 +477,8 @@ public class MecanumRobot {
     }
 
     public void AutoArmUp() {
-        //runToPositionArm(autoArmUpArm,0.9);
-        //runToPositionSlide(slideMax, 0.9);
+        runToPositionArm(autoArmUpArm,0.9);
+        runToPositionSlide(slideMax, 0.9);
         setServoPositionWrist(autoArmUpWrist);
         /*
         //Raises the left arm to 3628 ticks
@@ -505,9 +505,9 @@ public class MecanumRobot {
         */
     }
 
-    public void AutoSlidePickup() {
-        runToPositionArm(slidePickupArm,1); //0.5
-        runToPositionSlide(0, 1); //0.7 245
+    public void AutoArmOut() {
+        runToPositionArm(autoArmOutPosition,1); //0.5
+        //runToPositionSlide(0, 1); //0.7 245
         setServoPositionWrist(wristDown);
         setServoPositionLeftHand(1);
         setServoPositionRightHand(0);
