@@ -14,13 +14,13 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 //import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 
 import java.util.List;
+import java.util.Locale;
 
-import java
 @TeleOp(name="MecanumTest")
 public class MecanumTest extends LinearOpMode {
 
     MecanumRobot robot = new MecanumRobot(this);
-    boolean debugMode = false;
+    boolean debugMode = true;
 
     private class DriveThread extends Thread
     {
@@ -116,7 +116,7 @@ public class MecanumTest extends LinearOpMode {
         int leftArmPosition;
         int slidePosition;
 
-        double dl,dr;
+        double dm;
 
         /* Auto mode
         * April Tag
@@ -192,7 +192,7 @@ public class MecanumTest extends LinearOpMode {
                     telemetry.addData("Touch Sensor", "Is Not Pressed");
                 armDown = false;
             }*/
-
+            telemetry.addData(" Color Sensor Pixel Distance (cm)", String.format(Locale.US, "%.02f", robot.colorSensorPixelLDistance.getDistance(DistanceUnit.CM)));
             if (debugMode) {
                 // Color Sensor
                 blue = robot.getColorSensorBlue();
@@ -216,13 +216,12 @@ public class MecanumTest extends LinearOpMode {
                 // Distance Sensor
                 telemetry.addData("Left Distance Sensor", String.format("%.01f cm", robot.distanceSensorL.getDistance(DistanceUnit.CM)));
                 telemetry.addData("Right Distance Sensor", String.format("%.01f cm", robot.distanceSensorR.getDistance(DistanceUnit.CM)));
-                telemetry.addData("Left Claw Distance Sensor", String.format("%.01f cm", robot.distanceSensorClawL.getDistance(DistanceUnit.CM)));
-                telemetry.addData("Right Claw Distance Sensor", String.format("%.01f cm", robot.distanceSensorClawR.getDistance(DistanceUnit.CM)));
+                telemetry.addData("Middle Distance Sensor", String.format("%.01f cm", robot.distanceSensorMiddle.getDistance(DistanceUnit.CM)));
             }
-            dl = robot.distanceSensorClawL.getDistance(DistanceUnit.CM);
-            dr = robot.distanceSensorClawR.getDistance(DistanceUnit.CM); // middle
-            if (dr > 30) {
-                if (dl <= 26) {
+            /*
+            dm = robot.distanceSensorMiddle.getDistance(DistanceUnit.CM); // middle
+            if (dm > 30) {
+                if (dm <= 26) {
                     if (wristPosition != MecanumRobot.wristDown) {
                         telemetry.addData("Pixel detected, change pattern", 0);
                         if (!robot.getPattern().equals(MecanumRobot.greenPattern)) {
@@ -238,6 +237,7 @@ public class MecanumTest extends LinearOpMode {
                     }// what?
                 }
             }
+             */
             /*
             else if (dr < 15) { // incorrect
                 if (wristPosition != MecanumRobot.wristDown) {
@@ -257,9 +257,22 @@ public class MecanumTest extends LinearOpMode {
                     }
                 }
             }
-            */
+
             else {
                 telemetry.addData("Nothing detected", 0);
+                if (!robot.getPattern().equals(MecanumRobot.defaultPattern)) {
+                    robot.displayPattern(MecanumRobot.defaultPattern);
+                    telemetry.addData("Change pattern to", "default");
+                }
+            }
+             */
+            if (robot.colorSensorPixelLDistance.getDistance(DistanceUnit.CM) <= 2) {
+                if (!robot.getPattern().equals(MecanumRobot.greenPattern)) {
+                    robot.displayPattern(MecanumRobot.greenPattern);
+                    telemetry.addData("Change pattern to", "green");
+                }
+            }
+            else {
                 if (!robot.getPattern().equals(MecanumRobot.defaultPattern)) {
                     robot.displayPattern(MecanumRobot.defaultPattern);
                     telemetry.addData("Change pattern to", "default");

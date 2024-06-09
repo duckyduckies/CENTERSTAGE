@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import android.hardware.Sensor;
 import android.util.Size;
 
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
@@ -51,7 +52,7 @@ public class MecanumRobot {
     public final static int armMax = 2900;
     public final static int armMin = 0;
     
-    public final static int autoArmUpArm = 700;
+    public final static int autoArmUpArm = 650;
     public final static int autoArmUpBackArm = 2793; //2397;
     public final static DcMotorSimple.Direction defaultDirectionLeftArm = DcMotorSimple.Direction.REVERSE;
     public final static DcMotorSimple.Direction defaultDirectionRightArm = DcMotorSimple.Direction.FORWARD;
@@ -80,10 +81,10 @@ public class MecanumRobot {
     public TouchSensor touchSensor = null;
     public DistanceSensor distanceSensorL = null;
     public DistanceSensor distanceSensorR = null;
-    public DistanceSensor distanceSensorClawL = null;
-    public DistanceSensor distanceSensorClawR = null;
+    public DistanceSensor distanceSensorMiddle = null;
 
-    private ColorSensor colorSensor, colorSensorL;
+    public DistanceSensor colorSensorPixelLDistance;
+    private ColorSensor colorSensor, colorSensorPixelL;
 
     /*
      * Change the pattern every 10 seconds in AUTO mode.
@@ -208,8 +209,7 @@ public class MecanumRobot {
 
         distanceSensorL = myOpMode.hardwareMap.get(DistanceSensor.class, "distanceSensorL");
         distanceSensorR = myOpMode.hardwareMap.get(DistanceSensor.class, "distanceSensorR");
-        distanceSensorClawL = myOpMode.hardwareMap.get(DistanceSensor.class, "distanceSensorClawL");
-        distanceSensorClawR = myOpMode.hardwareMap.get(DistanceSensor.class, "distanceSensorClawR");
+        distanceSensorMiddle = myOpMode.hardwareMap.get(DistanceSensor.class, "distanceSensorMiddle");
 
         /*
         * Auto mode initialization
@@ -236,13 +236,13 @@ public class MecanumRobot {
 
         colorSensor = myOpMode.hardwareMap.get(ColorSensor.class, "colorSensorR");
         colorSensor.enableLed(true);
-        colorSensorL = myOpMode.hardwareMap.get(ColorSensor.class, "colorSensorL");
-        colorSensorL.enableLed(true);
-
+        colorSensorPixelL = myOpMode.hardwareMap.get(ColorSensor.class, "colorSensorPixelL");
+        colorSensorPixelL.enableLed(true);
+        colorSensorPixelLDistance = myOpMode.hardwareMap.get(DistanceSensor.class, "colorSensorPixelL");
         default_red = colorSensor.red();
         default_blue = colorSensor.blue();
-        default_red_left = colorSensorL.red();
-        default_blue_left = colorSensorL.blue();
+        default_red_left = colorSensorPixelL.red();
+        default_blue_left = colorSensorPixelL.blue();
 
         displayKind = MecanumRobot.DisplayKind.MANUAL;
 
@@ -477,8 +477,8 @@ public class MecanumRobot {
     }
 
     public void AutoArmUp() {
-        runToPositionArm(autoArmUpArm,0.5);
-        runToPositionSlide(slideMax, 0.5);
+        //runToPositionArm(autoArmUpArm,0.9);
+        //runToPositionSlide(slideMax, 0.9);
         setServoPositionWrist(autoArmUpWrist);
         /*
         //Raises the left arm to 3628 ticks
@@ -506,8 +506,8 @@ public class MecanumRobot {
     }
 
     public void AutoSlidePickup() {
-        runToPositionArm(slidePickupArm,0.5);
-        runToPositionSlide(250, 0.7);
+        runToPositionArm(slidePickupArm,1); //0.5
+        runToPositionSlide(0, 1); //0.7 245
         setServoPositionWrist(wristDown);
         setServoPositionLeftHand(1);
         setServoPositionRightHand(0);
@@ -710,13 +710,13 @@ public class MecanumRobot {
         return (colorSensor.blue());
     }
     public int getLeftColorSensorBlue() {
-        return colorSensorL.blue();
+        return colorSensorPixelL.blue();
     }
     public int getColorSensorRed() {
         return colorSensor.red();
     }
     public int getLeftColorSensorRed() {
-        return colorSensorL.red();
+        return colorSensorPixelL.red();
     }
 
     //public int getColorSensorGreen() { return colorSensor.green(); }

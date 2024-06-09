@@ -37,8 +37,7 @@ public class BlueClose extends LinearOpMode {
         {
             telemetry.addData("Left Distance Sensor", String.format("%.01f cm", robot.distanceSensorL.getDistance(DistanceUnit.CM)));
             telemetry.addData("Right Distance Sensor", String.format("%.01f cm", robot.distanceSensorR.getDistance(DistanceUnit.CM)));
-            telemetry.addData("Left Claw Distance Sensor", String.format("%.01f cm", robot.distanceSensorClawL.getDistance(DistanceUnit.CM)));
-            telemetry.addData("Right Claw Distance Sensor", String.format("%.01f cm", robot.distanceSensorClawR.getDistance(DistanceUnit.CM)));
+            telemetry.addData("Middle Distance Sensor", String.format("%.01f cm", robot.distanceSensorMiddle.getDistance(DistanceUnit.CM)));
 
             telemetry.update();
         }
@@ -103,7 +102,7 @@ public class BlueClose extends LinearOpMode {
                 targetAprilTag = 3;
                 break;
             }
-            else if (robot.distanceSensorClawR.getDistance(DistanceUnit.CM) < 19)
+            else if (robot.distanceSensorMiddle.getDistance(DistanceUnit.CM) < 19)
             {
                 //Center
                 robot.move(0,0,0,0);
@@ -128,8 +127,7 @@ public class BlueClose extends LinearOpMode {
             if (debugMode == true) {
                 telemetry.addData("Left Distance Sensor", String.format("%.01f cm", robot.distanceSensorL.getDistance(DistanceUnit.CM)));
                 telemetry.addData("Right Distance Sensor", String.format("%.01f cm", robot.distanceSensorR.getDistance(DistanceUnit.CM)));
-                telemetry.addData("Left Claw Distance Sensor", String.format("%.01f cm", robot.distanceSensorClawL.getDistance(DistanceUnit.CM)));
-                telemetry.addData("Right Claw Distance Sensor", String.format("%.01f cm", robot.distanceSensorClawR.getDistance(DistanceUnit.CM)));
+                telemetry.addData("Left Claw Distance Sensor", String.format("%.01f cm", robot.distanceSensorMiddle.getDistance(DistanceUnit.CM)));
             }
             telemetry.update();
         }
