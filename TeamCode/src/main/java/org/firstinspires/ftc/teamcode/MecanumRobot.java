@@ -453,12 +453,14 @@ public class MecanumRobot {
         // Claw closed
         setServoPositionLeftHand(defaultLeftPosition);
         setServoPositionRightHand(defaultRightPosition);
-        myOpMode.sleep(500);
-        // Wrist up
-        setServoPositionWrist(defaultWristPosition);
+        //myOpMode.sleep(500);
 
         runToPositionSlide(0, -0.9);
-        runToPositionArm(0,-0.9);
+
+        // Wrist up
+        setServoPositionWrist(defaultWristPosition);
+        runToPositionArm(0,-0.7);
+
         // Calibrates arm position using touch sensor
         // We don't need this because as long as robot is at 0 position when it's turned on
         // the encoder will remember the position while power is on
@@ -473,13 +475,12 @@ public class MecanumRobot {
         }
         setMotorPowerArm(0);
         stopAndResetArmSlide();
-
     }
 
     public void AutoArmUp() {
         runToPositionArm(autoArmUpArm,0.9);
-        runToPositionSlide(slideMax, 0.9);
         setServoPositionWrist(autoArmUpWrist);
+        runToPositionSlide(slideMax, 0.9);
         /*
         //Raises the left arm to 3628 ticks
         ElapsedTime runtime2 = new ElapsedTime(); // prevent infinite loop
