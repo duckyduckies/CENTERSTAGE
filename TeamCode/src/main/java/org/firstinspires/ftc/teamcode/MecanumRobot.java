@@ -52,7 +52,7 @@ public class MecanumRobot {
     public final static int armMax = 2900;
     public final static int armMin = 0;
     
-    public final static int autoArmUpArm = 720;
+    public final static int autoArmUpArm = 530;
     public final static int autoArmUpBackArm = 2793; //2397;
     public final static DcMotorSimple.Direction defaultDirectionLeftArm = DcMotorSimple.Direction.REVERSE;
     public final static DcMotorSimple.Direction defaultDirectionRightArm = DcMotorSimple.Direction.FORWARD;
@@ -507,8 +507,8 @@ public class MecanumRobot {
     }
 
     public void AutoArmOut() {
-        runToPositionArm(autoArmOutPosition,1); //0.5
-        //runToPositionSlide(0, 1); //0.7 245
+        runToPositionArm(30,1); //0.5
+        runToPositionSlide(240, 1); //0.7 245
         setServoPositionWrist(wristDown);
         setServoPositionLeftHand(1);
         setServoPositionRightHand(0);

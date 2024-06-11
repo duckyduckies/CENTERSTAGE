@@ -95,10 +95,11 @@ public class RedClose extends LinearOpMode {
                 sleep(1000);
                 robot.setServoPositionLeftHand(1);
                 sleep(1000);
-                robot.move(0,1,0,0.3);
+                robot.move(0,-1,0,0.3);
                 sleep(50);
                 robot.move(0,0,-1,0.4);
                 sleep(1300);
+                robot.move(0,0,0,0);
                 targetAprilTag = 6;
                 break;
             }
@@ -129,15 +130,15 @@ public class RedClose extends LinearOpMode {
             }
             telemetry.update();
         }
+        robot.AutoWristUp();
         // once detected, stop the robot
         robot.move(0,-1,0,0.3);
-        robot.AutoWristUp();
-        sleep(300);
+        sleep(1300);
         robot.move(0,0,0,0);
 
         //turn to face backdrop
         robot.move(0,0,1,0.4);
-        sleep(1350);
+        sleep(1250);
         robot.move(0,0,0,0);
         //Move robot forward until it senses red
 
