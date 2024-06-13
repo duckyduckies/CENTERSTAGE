@@ -71,6 +71,7 @@ public class RedClose extends LinearOpMode {
                 sleep(1000);
                 robot.setServoPositionLeftHand(1);
                 sleep(1000);
+                robot.setServoPositionWrist(0);
                 robot.move(0,1,0,0.3);
                 sleep(50);
                 robot.move(0,0,1,0.4);
@@ -93,7 +94,12 @@ public class RedClose extends LinearOpMode {
                 sleep(200);
                 robot.setServoPositionWrist(0.85);
                 sleep(1000);
+                robot.move(0,1,0,0.2);
+                sleep(300);
+                robot.move(0,0,0,0);
                 robot.setServoPositionLeftHand(1);
+                sleep(400);
+                robot.setServoPositionWrist(0);
                 sleep(1000);
                 robot.move(0,-1,0,0.3);
                 sleep(50);
@@ -120,6 +126,7 @@ public class RedClose extends LinearOpMode {
 
                 robot.setServoPositionLeftHand(1);
                 sleep(800);
+                robot.setServoPositionWrist(0);
                 targetAprilTag = 5;
                 break;
             }
@@ -130,12 +137,11 @@ public class RedClose extends LinearOpMode {
             }
             telemetry.update();
         }
-        robot.AutoWristUp();
         // once detected, stop the robot
         robot.move(0,-1,0,0.3);
         sleep(1300);
         robot.move(0,0,0,0);
-
+        robot.AutoWristUp();
         //turn to face backdrop
         robot.move(0,0,1,0.4);
         sleep(1250);
@@ -143,7 +149,7 @@ public class RedClose extends LinearOpMode {
         //Move robot forward until it senses red
 
         robot.move(0,1,0,0.4);
-        sleep(1400); // move forward using power 0.4 for 1 second
+        sleep(1000); // move forward using power 0.4 for 1 second
         robot.move(0,0,0,0);
         sleep(100);
         robot.move(0,1,0,0.15);
@@ -167,94 +173,93 @@ public class RedClose extends LinearOpMode {
         telemetry.addData("target tag" , targetAprilTag);
         telemetry.update();
 
-        if (redDetected == true)
+
+        // april tag start
+        if (alliance == 0)
         {
-            // april tag start
+            robot.move(1,0,0,0.20);
+        }
+        else if (alliance == 1)
+        {
+            robot.move(-1,0,0,0.20);
+        }
+        ElapsedTime elapsedTime = new ElapsedTime();
+        elapsedTime.reset();
+
+        while (aprilTagRunning && opModeIsActive() && elapsedTime.milliseconds() < (6000 + (6 - targetAprilTag) * 1500)) {
+
+            aprilTagDetected = false;
+            AprilTagDetection myAprilTagDetection = robot.tryDetectAprilTag(targetAprilTag);
+            telemetry.addData("April Tag detected: ", robot.getDetectionSize());
+            telemetry.addData("target tag" , targetAprilTag);
+            if (myAprilTagDetection != null)
+            {
+                distance = myAprilTagDetection.ftcPose.y;
+                aprilTagDetected = true;
+                telemetry.addData("distance", distance);
+                telemetry.addLine("target april tag detected");
+            }
+
+            if (aprilTagDetected && aprilTagMode == 0) {
+                aprilTagMode = 1;
+            }
+            else if (aprilTagDetected && aprilTagMode == 1) {
+                double difference = distance - desiredDistance;
+                // estimating that it takes 170 ms for robot to move 1 inch forward (power 0.15)
+                if (difference > 0.1) {
+                    robot.move(0, 1, 0, 0.15);
+                    /////////////////////////going up
+
+                    sleep((long) (170 * difference));
+                } else if (difference < -0.1) {
+                    robot.move(0, -1, 0, 0.15);
+                    /////////////////////////going down
+                    sleep((long) (170 * abs(difference)));
+                }
+                aprilTagMode = 2;
+
+                if (alliance == 0) {
+                    robot.move(1, 0, 0, 0.3);
+                    sleep(750);
+                } else if (alliance == 1) {
+                    robot.move(1, 0, 0, 0.3);
+                    sleep(300);
+                }
+
+                aprilTagRunning = false;
+            }
+            telemetry.update();
+            sleep(10);
+        }
+        robot.move(0,0, 0, 0);
+        if (aprilTagMode == 2)
+        {
+            robot.AutoArmUp();
+            robot.setServoPositionWrist(1);
+            robot.move(0,1,0,0.4);
+            sleep(550);
+            robot.move(0, 0, 0, 0);
+            sleep(500);
+            robot.setServoPositionLeftHand(0.5);
+            robot.setServoPositionRightHand(0.5);
+            sleep(400);
+
+            robot.move(0, -1, 0, 0.3);
+            sleep(200);
+            robot.move(0, 0, 0, 0);
+            robot.AutoArmDown();
+
             if (alliance == 0)
             {
-                robot.move(1,0,0,0.20);
+                robot.move(1,0,0,0.25);
             }
             else if (alliance == 1)
             {
-                robot.move(-1,0,0,0.20);
+                robot.move(-1,0,0,0.25);
             }
-            ElapsedTime elapsedTime = new ElapsedTime();
-            elapsedTime.reset();
+            sleep(500);
+            robot.move(0, 0, 0, 0);
 
-            while (aprilTagRunning && opModeIsActive() && elapsedTime.milliseconds() < (6000 + (6 - targetAprilTag) * 1500)) {
-
-                aprilTagDetected = false;
-                AprilTagDetection myAprilTagDetection = robot.tryDetectAprilTag(targetAprilTag);
-                telemetry.addData("April Tag detected: ", robot.getDetectionSize());
-                telemetry.addData("target tag" , targetAprilTag);
-                if (myAprilTagDetection != null)
-                {
-                    distance = myAprilTagDetection.ftcPose.y;
-                    aprilTagDetected = true;
-                    telemetry.addData("distance", distance);
-                    telemetry.addLine("target april tag detected");
-                }
-
-                if (aprilTagDetected && aprilTagMode == 0) {
-                    aprilTagMode = 1;
-                }
-                else if (aprilTagDetected && aprilTagMode == 1) {
-                    double difference = distance - desiredDistance;
-                    // estimating that it takes 170 ms for robot to move 1 inch forward (power 0.15)
-                    if (difference > 0.1) {
-                        robot.move(0, 1, 0, 0.15);
-                        /////////////////////////going up
-
-                        sleep((long) (170 * difference));
-                    } else if (difference < -0.1) {
-                        robot.move(0, -1, 0, 0.15);
-                        /////////////////////////going down
-                        sleep((long) (170 * abs(difference)));
-                    }
-                    aprilTagMode = 2;
-
-                    if (alliance == 0) {
-                        robot.move(1, 0, 0, 0.3);
-                        sleep(750);
-                    } else if (alliance == 1) {
-                        robot.move(1, 0, 0, 0.3);
-                        sleep(300);
-                    }
-
-                    aprilTagRunning = false;
-                }
-                telemetry.update();
-                sleep(10);
-            }
-            robot.move(0,0, 0, 0);
-            if (aprilTagMode == 2)
-            {
-                robot.AutoArmUp();
-
-                robot.move(0,1,0,0.4);
-                sleep(550);
-                robot.move(0, 0, 0, 0);
-                sleep(500);
-                robot.setServoPositionLeftHand(0.5);
-                robot.setServoPositionRightHand(0.5);
-                sleep(400);
-
-                robot.move(0, -1, 0, 0.3);
-                sleep(200);
-                robot.move(0, 0, 0, 0);
-                robot.AutoArmDown();
-
-                if (alliance == 0)
-                {
-                    robot.move(1,0,0,0.25);
-                }
-                else if (alliance == 1)
-                {
-                    robot.move(-1,0,0,0.25);
-                }
-                sleep(500);
-                robot.move(0, 0, 0, 0);
-            }
         }
     }
 }
