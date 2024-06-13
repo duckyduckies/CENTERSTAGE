@@ -531,9 +531,12 @@ public class MecanumRobot {
 
     }
     public void AutoWristDown() {
+        runToPositionSlide(autoWristDownSlide, 1);
+
         // Opens claws
         setServoPositionLeftHand(1);
         setServoPositionRightHand(0);
+
         // Puts the wrist down
         servoWrist.setPosition(wristDown);
         //myOpMode.sleep(1500);
