@@ -71,9 +71,13 @@ public class MecanumRobot {
     public final static int wristDown = 1;
     public final static double autoArmUpBackWrist = 0.35; //0.2;
 
-    public final static double autoArmUpWrist = 0.6;
+    public final static double autoArmUpWrist = 0.7;
 
-    public final static int autoArmOutPosition = 0; //135
+    public final static int autoArmOutArm = 30; //135
+
+    public final static int autoArmOutSlide = 240;
+
+    public final static int autoWristDownSlide = 180;
 
     public final static int defaultLauncherPosition = 0;
 
@@ -122,7 +126,7 @@ public class MecanumRobot {
     public int default_blue_left;
 
     public final static int red_diff = 700;
-    public final static int blue_diff = 2600;
+    public final static int blue_diff = 1800;
     public final static int red_diff_left = 250;
     public final static int blue_diff_left = 1200;
     public final static int red_threshold = 2800; // compared to 1900
@@ -506,8 +510,8 @@ public class MecanumRobot {
     }
 
     public void AutoArmOut() {
-        runToPositionArm(85,1); //0.5
-        runToPositionSlide(240, 1); //0.7 245
+        runToPositionArm(autoArmOutArm,1); //0.5 30
+        runToPositionSlide(autoArmOutSlide, 1); //0.7 240
         setServoPositionWrist(wristDown);
         setServoPositionLeftHand(1);
         setServoPositionRightHand(0);
