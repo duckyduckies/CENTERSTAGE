@@ -71,9 +71,13 @@ public class MecanumRobot {
     public final static int wristDown = 1;
     public final static double autoArmUpBackWrist = 0.35; //0.2;
 
-    public final static double autoArmUpWrist = 0.6;
+    public final static double autoArmUpWrist = 0.7;
 
-    public final static int autoArmOutPosition = 0; //135
+    public final static int autoArmOutArm = 30; //135
+
+    public final static int autoArmOutSlide = 240;
+
+    public final static int autoWristDownSlide = 180;
 
     public final static int defaultLauncherPosition = 0;
 
@@ -507,8 +511,8 @@ public class MecanumRobot {
     }
 
     public void AutoArmOut() {
-        runToPositionArm(30,1); //0.5
-        runToPositionSlide(240, 1); //0.7 245
+        runToPositionArm(autoArmOutArm,1); //0.5 30
+        runToPositionSlide(autoArmOutSlide, 1); //0.7 240
         setServoPositionWrist(wristDown);
         setServoPositionLeftHand(1);
         setServoPositionRightHand(0);
@@ -520,9 +524,12 @@ public class MecanumRobot {
 
     }
     public void AutoWristDown() {
+        runToPositionSlide(autoWristDownSlide, 1);
+
         // Opens claws
         setServoPositionLeftHand(1);
         setServoPositionRightHand(0);
+
         // Puts the wrist down
         servoWrist.setPosition(wristDown);
         //myOpMode.sleep(1500);
