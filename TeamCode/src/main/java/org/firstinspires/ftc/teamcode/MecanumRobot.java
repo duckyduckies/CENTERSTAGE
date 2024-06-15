@@ -89,7 +89,10 @@ public class MecanumRobot {
 
     public DistanceSensor colorSensorPixelLDistance;
     private ColorSensor colorSensor, colorSensorPixelL;
-
+    public DistanceSensor colorSensorPixelRDistance;
+    private ColorSensor colorSensorPixelR;
+    public final static double THRESHOLD_LEFT_CLAW = 2.2; // blue light if under it
+    public final static double THRESHOLD_RIGHT_CLAW = 2.5; // yellow light if under it
     /*
      * Change the pattern every 10 seconds in AUTO mode.
      */
@@ -102,9 +105,10 @@ public class MecanumRobot {
 
     RevBlinkinLedDriver blinkinLedDriver;
     public final static RevBlinkinLedDriver.BlinkinPattern defaultPattern = RevBlinkinLedDriver.BlinkinPattern.DARK_GRAY;
-    public final static RevBlinkinLedDriver.BlinkinPattern greenPattern = RevBlinkinLedDriver.BlinkinPattern.GREEN;
+    public final static RevBlinkinLedDriver.BlinkinPattern greenPattern = RevBlinkinLedDriver.BlinkinPattern.DARK_GREEN;
     public final static RevBlinkinLedDriver.BlinkinPattern yellowPattern = RevBlinkinLedDriver.BlinkinPattern.YELLOW;
     public final static RevBlinkinLedDriver.BlinkinPattern redPattern = RevBlinkinLedDriver.BlinkinPattern.RED;
+    public final static RevBlinkinLedDriver.BlinkinPattern bluePattern = RevBlinkinLedDriver.BlinkinPattern.BLUE;
     private String currentPattern;
     private MecanumRobot.DisplayKind displayKind;
     Deadline ledCycleDeadline;
@@ -242,7 +246,10 @@ public class MecanumRobot {
         colorSensor.enableLed(true);
         colorSensorPixelL = myOpMode.hardwareMap.get(ColorSensor.class, "colorSensorPixelL");
         colorSensorPixelL.enableLed(true);
-        colorSensorPixelLDistance = myOpMode.hardwareMap.get(DistanceSensor.class, "colorSensorPixelL");
+        colorSensorPixelLDistance = myOpMode.hardwareMap.get(DistanceSensor.class, "colorSensorPixelR");
+        colorSensorPixelR = myOpMode.hardwareMap.get(ColorSensor.class, "colorSensorPixelR");
+        colorSensorPixelR.enableLed(true);
+        colorSensorPixelRDistance = myOpMode.hardwareMap.get(DistanceSensor.class, "colorSensorPixelR");
         default_red = colorSensor.red();
         default_blue = colorSensor.blue();
         default_red_left = colorSensorPixelL.red();
