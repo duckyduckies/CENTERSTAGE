@@ -122,7 +122,7 @@ public class MecanumRobot {
     public int default_blue_left;
 
     public final static int red_diff = 700;
-    public final static int blue_diff = 1800;
+    public final static int blue_diff = 2600;
     public final static int red_diff_left = 250;
     public final static int blue_diff_left = 1200;
     public final static int red_threshold = 2800; // compared to 1900
