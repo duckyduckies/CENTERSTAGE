@@ -266,8 +266,8 @@ public class MecanumTest extends LinearOpMode {
                 }
             }
              */
-            if (robot.colorSensorPixelLDistance.getDistance(DistanceUnit.CM) <= 2) {
-                if (!robot.getPattern().equals(MecanumRobot.greenPattern)) {
+            /*if (robot.colorSensorPixelLDistance.getDistance(DistanceUnit.CM) <= 2) {
+                if (robot.colorSensorPixelLDistance.getDistance(DistanceUnit.CM) <= 2) {
                     robot.displayPattern(MecanumRobot.greenPattern);
                     telemetry.addData("Change pattern to", "green");
                 }
@@ -278,6 +278,36 @@ public class MecanumTest extends LinearOpMode {
                     telemetry.addData("Change pattern to", "default");
                 }
             }
+
+             */
+            double leftClawDistance = robot.colorSensorPixelLDistance.getDistance(DistanceUnit.CM);
+            double rightClawDistance = robot.colorSensorPixelRDistance.getDistance(DistanceUnit.CM);
+            if (leftClawDistance <= MecanumRobot.THRESHOLD_LEFT_CLAW && rightClawDistance > MecanumRobot.THRESHOLD_RIGHT_CLAW) {
+
+                System.out.println("if leftClawDistance <= THRESHOLD_LEFT_CLAW && rightClawDistance > THRESHOLD_RIGHT_CLAW");
+                robot.displayPattern(MecanumRobot.bluePattern);
+
+            }
+            else if (rightClawDistance <= MecanumRobot.THRESHOLD_RIGHT_CLAW && leftClawDistance > MecanumRobot.THRESHOLD_LEFT_CLAW) {
+
+                System.out.println("if rightClawDistance <= THRESHOLD_RIGHT_CLAW && leftClawDistance > THRESHOLD_LEFT_CLAW");
+                robot.displayPattern(MecanumRobot.yellowPattern);
+
+            }
+            else if (leftClawDistance <= MecanumRobot.THRESHOLD_LEFT_CLAW
+                    && rightClawDistance <= MecanumRobot.THRESHOLD_RIGHT_CLAW) {
+
+                System.out.println("if leftClawDistance <= THRESHOLD_LEFT_CLAW && rightClawDistance <= THRESHOLD_RIGHT_CLAW");
+                robot.displayPattern(MecanumRobot.greenPattern);;
+
+            }
+            else {
+
+                System.out.println("else");
+                robot.displayPattern(MecanumRobot.defaultPattern);;
+
+            }
+
             /*
             * If NOT running the auto mode, then allows to control the arm, slide, wrist & claw
              */
@@ -435,7 +465,7 @@ public class MecanumTest extends LinearOpMode {
                         sleep(100);
                     }
                 }
-                if (debugMode == true)
+                if (debugMode)
                     telemetry.addData("Claw Servos", "left (%.2f), right (%.2f)", leftPosition, rightPosition);
 
                 // Wrist movement
