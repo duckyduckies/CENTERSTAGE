@@ -71,9 +71,13 @@ public class MecanumRobot {
     public final static int wristDown = 1;
     public final static double autoArmUpBackWrist = 0.35; //0.2;
 
-    public final static double autoArmUpWrist = 0.6;
+    public final static double autoArmUpWrist = 0.7;
 
-    public final static int autoArmOutPosition = 0; //135
+    public final static int autoArmOutArm = 85; //135
+
+    public final static int autoArmOutSlide = 240;
+
+    public final static int autoWristDownSlide = 180;
 
     public final static int defaultLauncherPosition = 0;
 
@@ -85,7 +89,10 @@ public class MecanumRobot {
 
     public DistanceSensor colorSensorPixelLDistance;
     private ColorSensor colorSensor, colorSensorPixelL;
-
+    public DistanceSensor colorSensorPixelRDistance;
+    private ColorSensor colorSensorPixelR;
+    public final static double THRESHOLD_LEFT_CLAW = 2.2; // blue light if under it
+    public final static double THRESHOLD_RIGHT_CLAW = 2.5; // yellow light if under it
     /*
      * Change the pattern every 10 seconds in AUTO mode.
      */
@@ -98,9 +105,10 @@ public class MecanumRobot {
 
     RevBlinkinLedDriver blinkinLedDriver;
     public final static RevBlinkinLedDriver.BlinkinPattern defaultPattern = RevBlinkinLedDriver.BlinkinPattern.DARK_GRAY;
-    public final static RevBlinkinLedDriver.BlinkinPattern greenPattern = RevBlinkinLedDriver.BlinkinPattern.GREEN;
+    public final static RevBlinkinLedDriver.BlinkinPattern greenPattern = RevBlinkinLedDriver.BlinkinPattern.DARK_GREEN;
     public final static RevBlinkinLedDriver.BlinkinPattern yellowPattern = RevBlinkinLedDriver.BlinkinPattern.YELLOW;
     public final static RevBlinkinLedDriver.BlinkinPattern redPattern = RevBlinkinLedDriver.BlinkinPattern.RED;
+    public final static RevBlinkinLedDriver.BlinkinPattern bluePattern = RevBlinkinLedDriver.BlinkinPattern.BLUE;
     private String currentPattern;
     private MecanumRobot.DisplayKind displayKind;
     Deadline ledCycleDeadline;
@@ -122,7 +130,7 @@ public class MecanumRobot {
     public int default_blue_left;
 
     public final static int red_diff = 700;
-    public final static int blue_diff = 2600;
+    public final static int blue_diff = 1800;
     public final static int red_diff_left = 250;
     public final static int blue_diff_left = 1200;
     public final static int red_threshold = 2800; // compared to 1900
@@ -238,7 +246,10 @@ public class MecanumRobot {
         colorSensor.enableLed(true);
         colorSensorPixelL = myOpMode.hardwareMap.get(ColorSensor.class, "colorSensorPixelL");
         colorSensorPixelL.enableLed(true);
-        colorSensorPixelLDistance = myOpMode.hardwareMap.get(DistanceSensor.class, "colorSensorPixelL");
+        colorSensorPixelLDistance = myOpMode.hardwareMap.get(DistanceSensor.class, "colorSensorPixelR");
+        colorSensorPixelR = myOpMode.hardwareMap.get(ColorSensor.class, "colorSensorPixelR");
+        colorSensorPixelR.enableLed(true);
+        colorSensorPixelRDistance = myOpMode.hardwareMap.get(DistanceSensor.class, "colorSensorPixelR");
         default_red = colorSensor.red();
         default_blue = colorSensor.blue();
         default_red_left = colorSensorPixelL.red();
@@ -269,6 +280,7 @@ public class MecanumRobot {
         double distance = Double.MAX_VALUE;
         */
     }
+
 
     /**
      * Mecanum Drivetrain
@@ -506,8 +518,8 @@ public class MecanumRobot {
     }
 
     public void AutoArmOut() {
-        runToPositionArm(85,1); //0.5
-        runToPositionSlide(240, 1); //0.7 245
+        runToPositionArm(autoArmOutArm,1); //0.5 30
+        runToPositionSlide(autoArmOutSlide, 1); //0.7 240
         setServoPositionWrist(wristDown);
         setServoPositionLeftHand(1);
         setServoPositionRightHand(0);
