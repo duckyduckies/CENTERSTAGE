@@ -270,7 +270,6 @@ public class MecanumRobot {
         */
     }
 
-
     /**
      * Mecanum Drivetrain
      * Calculates the left/right front/rear motor powers required to achieve the requested
@@ -507,7 +506,7 @@ public class MecanumRobot {
     }
 
     public void AutoArmOut() {
-        runToPositionArm(30,1); //0.5
+        runToPositionArm(85,1); //0.5
         runToPositionSlide(240, 1); //0.7 245
         setServoPositionWrist(wristDown);
         setServoPositionLeftHand(1);
