@@ -115,6 +115,7 @@ public class MecanumTest extends LinearOpMode {
         int autoArmUpState = 0;
         int leftArmPosition;
         int slidePosition;
+        double leftClawDistance, rightClawDistance;
 
         double dm;
 
@@ -192,13 +193,12 @@ public class MecanumTest extends LinearOpMode {
                     telemetry.addData("Touch Sensor", "Is Not Pressed");
                 armDown = false;
             }*/
-            telemetry.addData(" Color Sensor Pixel Distance (cm)", String.format(Locale.US, "%.02f", robot.colorSensorPixelLDistance.getDistance(DistanceUnit.CM)));
             if (debugMode) {
                 // Color Sensor
                 blue = robot.getColorSensorBlue();
-                blueL = robot.getLeftColorSensorBlue();
+                //blueL = robot.getLeftColorSensorBlue();
                 red = robot.getColorSensorRed();
-                redL = robot.getLeftColorSensorRed();
+                //redL = robot.getLeftColorSensorRed();
 
                 telemetry.addData("Right Blue: ", blue);
                 telemetry.addData("Right Red: ", red);
@@ -206,8 +206,8 @@ public class MecanumTest extends LinearOpMode {
                 telemetry.addData("Left Red: ", redL);
                 telemetry.addData("Right Blue Default: ", robot.getDefaultBlue());
                 telemetry.addData("Right Red Default: ", robot.getDefaultRed());
-                telemetry.addData("Left Blue Default: ", robot.getLeftDefaultBlue());
-                telemetry.addData("Left Red Default: ", robot.getLeftDefaultRed());
+                //telemetry.addData("Left Blue Default: ", robot.getLeftDefaultBlue());
+                //telemetry.addData("Left Red Default: ", robot.getLeftDefaultRed());
                 //telemetry.addData("Right Blue Threshold: ", MecanumRobot.blue_threshold);
                 //telemetry.addData("Right Red Threshold: ", MecanumRobot.red_threshold);
                 //telemetry.addData("Left Blue Threshold: ", MecanumRobot.blue_threshold_left);
@@ -280,32 +280,36 @@ public class MecanumTest extends LinearOpMode {
             }
 
              */
-            double leftClawDistance = robot.colorSensorPixelLDistance.getDistance(DistanceUnit.CM);
-            double rightClawDistance = robot.colorSensorPixelRDistance.getDistance(DistanceUnit.CM);
+            leftClawDistance = robot.colorSensorPixelLDistance.getDistance(DistanceUnit.CM);
+            rightClawDistance = robot.colorSensorPixelRDistance.getDistance(DistanceUnit.CM);
             if (leftClawDistance <= MecanumRobot.THRESHOLD_LEFT_CLAW && rightClawDistance > MecanumRobot.THRESHOLD_RIGHT_CLAW) {
 
-                System.out.println("if leftClawDistance <= THRESHOLD_LEFT_CLAW && rightClawDistance > THRESHOLD_RIGHT_CLAW");
+                //System.out.println("if leftClawDistance <= THRESHOLD_LEFT_CLAW && rightClawDistance > THRESHOLD_RIGHT_CLAW");
                 robot.displayPattern(MecanumRobot.bluePattern);
+                if (debugMode) telemetry.addData("Change pattern to", "blue");
 
             }
             else if (rightClawDistance <= MecanumRobot.THRESHOLD_RIGHT_CLAW && leftClawDistance > MecanumRobot.THRESHOLD_LEFT_CLAW) {
 
-                System.out.println("if rightClawDistance <= THRESHOLD_RIGHT_CLAW && leftClawDistance > THRESHOLD_LEFT_CLAW");
+                //System.out.println("if rightClawDistance <= THRESHOLD_RIGHT_CLAW && leftClawDistance > THRESHOLD_LEFT_CLAW");
                 robot.displayPattern(MecanumRobot.yellowPattern);
 
+                if (debugMode) telemetry.addData("Change pattern to", "yellow");
             }
             else if (leftClawDistance <= MecanumRobot.THRESHOLD_LEFT_CLAW
                     && rightClawDistance <= MecanumRobot.THRESHOLD_RIGHT_CLAW) {
 
-                System.out.println("if leftClawDistance <= THRESHOLD_LEFT_CLAW && rightClawDistance <= THRESHOLD_RIGHT_CLAW");
+                //System.out.println("if leftClawDistance <= THRESHOLD_LEFT_CLAW && rightClawDistance <= THRESHOLD_RIGHT_CLAW");
                 robot.displayPattern(MecanumRobot.greenPattern);;
 
+                if (debugMode) telemetry.addData("Change pattern to", "green");
             }
             else {
 
-                System.out.println("else");
+                //System.out.println("else");
                 robot.displayPattern(MecanumRobot.defaultPattern);;
 
+                if (debugMode) telemetry.addData("Change pattern to", "default");
             }
 
             /*
