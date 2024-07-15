@@ -57,7 +57,7 @@ public class BlueClose extends LinearOpMode {
                 sleep(700);
                 robot.move(0,0,0,0);
                 robot.move(0,0,-1,0.4);
-                sleep(1300);
+                sleep(1200);
                 robot.move(0,0,0,0);
                 robot.move(0,1,0,0.1);
                 sleep(300);
@@ -70,6 +70,7 @@ public class BlueClose extends LinearOpMode {
                 sleep(1000);
                 robot.setServoPositionRightHand(0);
                 sleep(1000);
+                robot.setServoPositionRightHand(1);
                 robot.setServoPositionWrist(0);
                 robot.move(0,1,0,0.3);
                 sleep(50);
@@ -100,8 +101,12 @@ public class BlueClose extends LinearOpMode {
                 robot.move(0,1,0,0.2);
                 sleep(300);
                 robot.move(0,0,0,0);
+                robot.move(-1,0,0,0.2);
+                sleep(500);
+                robot.move(0,0,0,0);
                 robot.setServoPositionRightHand(0);
                 sleep(400);
+                robot.setServoPositionRightHand(1);
                 robot.setServoPositionWrist(0);
                 sleep(1000);
                 //robot.move(0,-1,0,0.3);
@@ -133,6 +138,7 @@ public class BlueClose extends LinearOpMode {
 
                 robot.setServoPositionRightHand(0);
                 sleep(800);
+                robot.setServoPositionRightHand(1);
                 robot.setServoPositionWrist(0);
                 // once detected, stop the robot
                 robot.move(0,-1,0,0.3);
