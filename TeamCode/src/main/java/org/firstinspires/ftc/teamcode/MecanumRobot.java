@@ -47,18 +47,19 @@ public class MecanumRobot {
     private DcMotor motorRightArm = null;
     private DcMotor motorSlides = null;
 
-    public final static int slideMax = 255;
+    public final static int slideMax = 243;
     public final static int slideMin = 0;
-    public final static int armMax = 2900;
+    public final static int armMax = 2400;
     public final static int armMin = 0;
-    
-    public final static int autoArmUpArm = 530;
-    public final static int autoArmUpBackArm = 2793; //2397;
+
+    public final static int autoArmUpArm = 475;
+    public final static int autoArmUpBackArm = 2400;
+    public final static int autoArmUpBackSlide = slideMax; //0;
+    public final static int autoArmOutArm = 30; //135
     public final static DcMotorSimple.Direction defaultDirectionLeftArm = DcMotorSimple.Direction.REVERSE;
     public final static DcMotorSimple.Direction defaultDirectionRightArm = DcMotorSimple.Direction.FORWARD;
     public final static DcMotorSimple.Direction defaultDirectionSlide = DcMotorSimple.Direction.FORWARD;
 
-    public final static int autoArmUpBackSlide = 186; //0;
     private Servo servoWrist = null;
     private Servo servoLeftHand = null;
     private Servo servoRightHand = null;
@@ -70,17 +71,10 @@ public class MecanumRobot {
     public final static int wristUp = 0;
     public final static int wristDown = 1;
     public final static double autoArmUpBackWrist = 0.35; //0.2;
-
     public final static double autoArmUpWrist = 0.7;
-
-    public final static int autoArmOutArm = 30; //135
-
-    public final static int autoArmOutSlide = 240;
-
-    public final static int autoWristDownSlide = 180;
-
     public final static int defaultLauncherPosition = 0;
-
+    public final static double maxSlidePower = 0.9;
+    public final static double maxArmPower = 0.5;
 
     public TouchSensor touchSensor = null;
     public DistanceSensor distanceSensorL = null;
@@ -162,9 +156,9 @@ public class MecanumRobot {
         motorHDRightRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         motorHDLeftFront.setDirection(DcMotorSimple.Direction.REVERSE);
-        motorHDLeftRear.setDirection(DcMotorSimple.Direction.FORWARD);
+        motorHDLeftRear.setDirection(DcMotorSimple.Direction.REVERSE);
         motorHDRightFront.setDirection(DcMotorSimple.Direction.FORWARD);
-        motorHDRightRear.setDirection(DcMotorSimple.Direction.FORWARD);
+        motorHDRightRear.setDirection(DcMotorSimple.Direction.REVERSE);
 
         // Top Motors
 
@@ -432,7 +426,6 @@ public class MecanumRobot {
     }
 
     public double getServoPositionRightHand() {
-
         return servoRightHand.getPosition();
     }
     public void setServoPositionLeftHand(double position) {
@@ -466,11 +459,14 @@ public class MecanumRobot {
         setServoPositionRightHand(defaultRightPosition);
         //myOpMode.sleep(500);
 
-        runToPositionSlide(0, -0.9);
+        runToPositionSlide(0, maxSlidePower);
 
         // Wrist up
         setServoPositionWrist(defaultWristPosition);
-        runToPositionArm(0,-0.7);
+
+        // Arm down
+        runToPositionArm(0,maxArmPower);
+        runWithoutEncoderArm();
 
         // Calibrates arm position using touch sensor
         // We don't need this because as long as robot is at 0 position when it's turned on
@@ -485,13 +481,14 @@ public class MecanumRobot {
             }
         }
         setMotorPowerArm(0);
+
         stopAndResetArmSlide();
     }
 
     public void AutoArmUp() {
-        runToPositionArm(autoArmUpArm,0.9);
+        runToPositionArm(autoArmUpArm,maxArmPower);
         setServoPositionWrist(autoArmUpWrist);
-        runToPositionSlide(slideMax, 0.9);
+        runToPositionSlide(slideMax, maxSlidePower);
         /*
         //Raises the left arm to 3628 ticks
         ElapsedTime runtime2 = new ElapsedTime(); // prevent infinite loop
@@ -518,36 +515,32 @@ public class MecanumRobot {
     }
 
     public void AutoArmOut() {
-        runToPositionArm(autoArmOutArm,1); //0.5 30
-        runToPositionSlide(autoArmOutSlide, 1); //0.7 240
+        runToPositionArm(autoArmOutArm,0.1); //0.5 30
+        runToPositionSlide(slideMax, maxSlidePower); //0.9 243
         setServoPositionWrist(wristDown);
+        // Opens claws
         setServoPositionLeftHand(1);
         setServoPositionRightHand(0);
     }
     public void AutoArmUpBack() {
-        runToPositionArm(autoArmUpBackArm, 0.5);
-        runToPositionSlide(autoArmUpBackSlide, 0.5);
+        runToPositionArm(autoArmUpBackArm, maxArmPower);
+        runToPositionSlide(autoArmUpBackSlide, maxSlidePower);
         setServoPositionWrist(autoArmUpBackWrist);
-
     }
     public void AutoWristDown() {
-        runToPositionSlide(autoWristDownSlide, 1);
-
+        // Puts the wrist down
+        servoWrist.setPosition(wristDown);
         // Opens claws
         setServoPositionLeftHand(1);
         setServoPositionRightHand(0);
-
-        // Puts the wrist down
-        servoWrist.setPosition(wristDown);
-        //myOpMode.sleep(1500);
-
+        myOpMode.sleep( 500);
     }
 
     public void AutoWristUp() {
         // Closes claws
         setServoPositionLeftHand(0);
         setServoPositionRightHand(1);
-        myOpMode.sleep( 1500);
+        myOpMode.sleep( 500);
         // Puts the wrist up
         servoWrist.setPosition(wristUp);
     }
